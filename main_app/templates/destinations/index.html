@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Destination List</h1>
+{% for destination in destinations%}
+<div class="card">
+    <div class="card-content">
+        <span class="card-title"> {{destination.location}}</span>
+        <span class="card-subtitle"> {{destination.country}}</span>
+        <p>Rating: {{destination.rating}}/10</p>
+        <p>Visited on: {{destination.date}}</p>
+        {% if destination.comment %}
+            <p>Thoughts: {{destination.comment}}</p>
+        {% else %}
+            <p>No comment.</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}
