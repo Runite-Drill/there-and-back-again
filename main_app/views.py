@@ -1,17 +1,18 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Destination
 
 # Create your views here.
 
-class Destination:
-    def __init__(self, location, country, date, rating, comment):
-        self.location = location
-        self.country = country
-        self.date = date
-        self.rating = rating
-        self.comment = comment
+# class Destination:
+#     def __init__(self, location, country, date, rating, comment):
+#         self.location = location
+#         self.country = country
+#         self.date = date
+#         self.rating = rating
+#         self.comment = comment
 
-
+'''
 destinations = [
     Destination('Queenstown','New Zealand','11-11-2015',6,'Lots of tourists.'),
     Destination('Vancouver','Canada','01-09-2014',7,'Exciting!'),
@@ -42,12 +43,33 @@ destinations = [
     Destination('Las Vegas','United States of America','15-09-2013',4,'$_$'),
     Destination('La Paz','Bolivia','16-03-2019',7,'Really enjoyed getting to know this place.'),
 ]
+'''
 
 def home(request):
-    return HttpResponse('<h1>There and Back Again</h1>') #httprequest is the same as res.send in express
+    return render(request, 'home.html')
 
 def about(request):
     return render(request, 'about.html') #render is the same as res.render in express
 
 def destination_index(request):
+    destinations = Destination.objects.all()
+    for i, destination in enumerate(destinations):
+        if destination.picture_upload != '':
+            if destination.picture_upload.name[:8] == "main_app":
+                destinations[i].picture_upload.name = '/' + destination.picture_upload.name[9:]
+            destinations[i].picture = destinations[i].picture_upload
+        elif destination.picture_url is not None:
+            destinations[i].picture = destinations[i].picture_url
+
     return render(request, 'destinations/index.html', {'destinations':destinations}) #can pass data into html file
+
+def destination_detail(request,destination_id):
+    destination = Destination.objects.get(id=destination_id)
+    if destination.picture_upload != '':
+        if destination.picture_upload.name[:8] == "main_app":
+            destination.picture_upload.name = '/' + destination.picture_upload.name[9:]
+        destination.picture = destination.picture_upload
+    elif destination.picture_url is not None:
+        destination.picture = destination.picture_url
+    return render(request, 'destinations/detail.html', {'destination':destination})
+

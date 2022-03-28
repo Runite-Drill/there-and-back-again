@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Destination Detail</h1>
+<div class="card">
+    <div class="card-content">
+        <div class="flex-container">
+            <div>
+                <span class="card-title"> {{destination.location}}</span>
+                <span class="card-subtitle"> {{destination.country}}</span>
+                <p>Rating: {{destination.rating}}/10</p>
+                <p>Visited on: {{destination.date}}</p>
+                {% if destination.comment %}
+                    <p>Thoughts: {{destination.comment}}</p>
+                {% else %}
+                    <p>No comment.</p>
+                {% endif %}
+            </div>
+
+            <div class="right">
+                <img width = '128px' height = '128px' src="{{destination.picture}}"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
