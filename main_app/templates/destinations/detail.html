@@ -2,27 +2,76 @@
 
 {% block content %}
 
-<h1>Destination Detail</h1>
+<h1>Country Detail</h1>
 <div class="card">
     <div class="card-content">
         <div class="flex-container">
             <div>
-                <span class="card-title"> {{destination.location}}</span>
-                <span class="card-subtitle"> {{destination.country}}</span>
+                <span class="card-title"> {{destination.country}}</span>
                 <p>Rating: {{destination.rating}}/10</p>
-                <p>Visited on: {{destination.date}}</p>
+                <p>Last visited on: {{destination.date}}</p>
                 {% if destination.comment %}
-                    <p>Thoughts: {{destination.comment}}</p>
+                    <p>General thoughts: {{destination.comment}}</p>
                 {% else %}
                     <p>No comment.</p>
                 {% endif %}
             </div>
 
             <div class="right">
-                <img width = '128px' height = '128px' src="{{destination.picture}}"/>
+                <img width = '128px' height = '128px'  class="picture" src="{{destination.picture}}"/>
             </div>
+        </div>
+        <div class="card-action">
+            <a href="{% url 'destination_update' destination.id %}">Edit</a>
+            <a href="{% url 'destination_delete' destination.id %}">Delete</a>
         </div>
     </div>
 </div>
+    
+<div> 
+    <h3>ADD LOCATION</h3>
+    <form method="post" action="{% url 'add_location' destination.id %}">
+        {%csrf_token%}
+        {{location_form.as_p}}
+        <input type="submit" class="btn" value="Add Location">
+    </form>
+</div>
+
+<div>
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Date Visited</th>
+                <th>Location</th>
+                <th>Rating</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in destination.location_set.all %}
+            <tr>
+                <td>{{location.date_visited}}</td>
+                <td>{{location.location}}</td>
+                <td>{{location.rating}}/10</td>
+                <td>{{location.comment}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+let dateEl = document.getElementById('id_date_visited');
+M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true,
+});
+
+// let selectEl = document.getElementById('id_location');
+// M.FormSelect.init(selectEl);
+
+</script>
 
 {% endblock %}

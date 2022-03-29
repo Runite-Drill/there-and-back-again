@@ -2,15 +2,14 @@
 
 {% block content %}
 
-<h1>Destination List</h1>
+<h1>Countries Visited</h1>
 {% for destination in destinations%}
 <div class="card">
     <a href="{%url 'detail' destination.id%}"> 
         <div class="card-content">
             <div class="flex-container">
                 <div>
-                    <span class="card-title"> {{destination.location}}</span>
-                    <span class="card-subtitle"> {{destination.country}}</span>
+                    <span class="card-title"> {{destination.country}}</span>
                     <p>Rating: {{destination.rating}}/10</p>
                     <p>Visited on: {{destination.date}}</p>
                     {% if destination.comment %}
@@ -22,7 +21,7 @@
 
 
                 <div class="right">
-                    <img width = '128x' height = '128px' src="{{destination.picture}}"/>
+                    <img width = '128x' height = '128px' class="picture" src="{{destination.picture}}"/>
                 </div>
             </div>
         </div>

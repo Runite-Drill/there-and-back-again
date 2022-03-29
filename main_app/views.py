@@ -1,8 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Destination
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from .forms import LocationForm
 
 # Create your views here.
+class destinationCreate(CreateView):
+    model = Destination
+    fields = '__all__'
+
+class destinationUpdate(UpdateView):
+    model = Destination
+    fields = ['date','rating','comment']
+
+class destinationDelete(DeleteView):
+    model = Destination
+    success_url = '/destinations/'
+
+
 
 # class Destination:
 #     def __init__(self, location, country, date, rating, comment):
@@ -71,5 +86,17 @@ def destination_detail(request,destination_id):
         destination.picture = destination.picture_upload
     elif destination.picture_url is not None:
         destination.picture = destination.picture_url
-    return render(request, 'destinations/detail.html', {'destination':destination})
+    else:
+        destination.picture = None
 
+    location_form = LocationForm()
+    return render(request, 'destinations/detail.html', {'destination':destination, 'location_form':location_form})
+
+
+def add_location(request,destination_id):
+    form = LocationForm(request.POST)
+    if form.is_valid():
+        new_location = form.save(commit=False)
+        new_location.destination_id = destination_id
+        new_location.save()
+    return redirect('detail', destination_id=destination_id)
