@@ -3,10 +3,10 @@ from . import views
 urlpatterns = [
     path("",views.home, name="home"), #mount the home view on the root path and name the url "home"
     path("about/",views.about, name="about"),
-    path("destinations/",views.destination_index, name="index"),
-    path("destinations/<int:destination_id>/",views.destination_detail, name="detail"),
-    path("destinations/create/",views.destinationCreate.as_view(), name="destination_create"),
-    path("destinations/<int:pk>/update/",views.destinationUpdate.as_view(), name="destination_update"),
-    path("destinations/<int:pk>/delete/",views.destinationDelete.as_view(), name="destination_delete"), 
-    path('destinations/<int:destination_id>/add_location/', views.add_location, name="add_location")
+    path("countries/",views.country_index, name="index"),
+    path("countries/<int:country_id>/",views.country_detail, name="detail"),
+    path("countries/create/",views.countryCreate.as_view(), name="country_create"),
+    path("countries/<int:pk>/update/",views.countryUpdate.as_view(), name="country_update"),
+    path("countries/<int:pk>/delete/",views.countryDelete.as_view(), name="country_delete"), 
+    path('countries/<int:country_id>/add_location/', views.add_location, name="add_location")
 ]

@@ -7,30 +7,30 @@
     <div class="card-content">
         <div class="flex-container">
             <div>
-                <span class="card-title"> {{destination.country}}</span>
-                <p>Rating: {{destination.rating}}/10</p>
-                <p>Last visited on: {{destination.date}}</p>
-                {% if destination.comment %}
-                    <p>General thoughts: {{destination.comment}}</p>
+                <span class="card-title"> {{country.country}}</span>
+                <p>Rating: {{country.rating}}/10</p>
+                <p>Last visited on: {{country.date}}</p>
+                {% if country.comment %}
+                    <p>General thoughts: {{country.comment}}</p>
                 {% else %}
                     <p>No comment.</p>
                 {% endif %}
             </div>
 
             <div class="right">
-                <img width = '128px' height = '128px'  class="picture" src="{{destination.picture}}"/>
+                <img width = '128px' height = '128px'  class="picture" src="{{country.picture}}"/>
             </div>
         </div>
         <div class="card-action">
-            <a href="{% url 'destination_update' destination.id %}">Edit</a>
-            <a href="{% url 'destination_delete' destination.id %}">Delete</a>
+            <a href="{% url 'country_update' country.id %}">Edit</a>
+            <a href="{% url 'country_delete' country.id %}">Delete</a>
         </div>
     </div>
 </div>
     
 <div> 
     <h3>ADD LOCATION</h3>
-    <form method="post" action="{% url 'add_location' destination.id %}">
+    <form method="post" action="{% url 'add_location' country.id %}">
         {%csrf_token%}
         {{location_form.as_p}}
         <input type="submit" class="btn" value="Add Location">
@@ -48,7 +48,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for location in destination.location_set.all %}
+            {% for location in country.location_set.all %}
             <tr>
                 <td>{{location.date_visited}}</td>
                 <td>{{location.location}}</td>

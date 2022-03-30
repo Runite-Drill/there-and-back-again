@@ -3,13 +3,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 
 # Create your models here.
-MEALS = (
-    ('B', 'Breakfast'),
-    ('L', 'Lunch'),
-    ('D', 'Dinner')
-)
-
-class Destination(models.Model):
+class Country(models.Model):
     country = models.CharField(max_length=100)
     date = models.DateField()
     rating = models.IntegerField(validators=[
@@ -24,18 +18,18 @@ class Destination(models.Model):
         return self.name 
 
     def get_absolute_url(self):
-        return reverse('detail', kwargs = {'destination_id':self.id})
+        return reverse('detail', kwargs = {'country_id':self.id})
 
 
 class Location(models.Model):
-    date_visited = models.DateField()
     location = models.CharField(max_length=100)
+    date_visited = models.DateField()
     rating = models.IntegerField(validators=[
             MaxValueValidator(10),
-            MinValueValidator(0)
+            MinValueValidator(1)
         ])
     comment = models.TextField(max_length=250)
-    destination = models.ForeignKey(Destination, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.get_location_display()} on {self.date}"

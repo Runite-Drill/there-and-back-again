@@ -1,21 +1,21 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Destination
+from .models import Country
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import LocationForm
 
 # Create your views here.
-class destinationCreate(CreateView):
-    model = Destination
+class countryCreate(CreateView):
+    model = Country
     fields = '__all__'
 
-class destinationUpdate(UpdateView):
-    model = Destination
+class countryUpdate(UpdateView):
+    model = Country
     fields = ['date','rating','comment']
 
-class destinationDelete(DeleteView):
-    model = Destination
-    success_url = '/destinations/'
+class countryDelete(DeleteView):
+    model = Country
+    success_url = '/countries/'
 
 
 
@@ -28,7 +28,7 @@ class destinationDelete(DeleteView):
 #         self.comment = comment
 
 '''
-destinations = [
+countries = [
     Destination('Queenstown','New Zealand','11-11-2015',6,'Lots of tourists.'),
     Destination('Vancouver','Canada','01-09-2014',7,'Exciting!'),
     Destination('Melbourne','Australia','10-01-2009',8,'Vibrant.'),
@@ -66,37 +66,38 @@ def home(request):
 def about(request):
     return render(request, 'about.html') #render is the same as res.render in express
 
-def destination_index(request):
-    destinations = Destination.objects.all()
-    for i, destination in enumerate(destinations):
-        if destination.picture_upload != '':
-            if destination.picture_upload.name[:8] == "main_app":
-                destinations[i].picture_upload.name = '/' + destination.picture_upload.name[9:]
-            destinations[i].picture = destinations[i].picture_upload
-        elif destination.picture_url is not None:
-            destinations[i].picture = destinations[i].picture_url
+def country_index(request):
+    countries = Country.objects.all()
+    for i, country in enumerate(countries):
+        if country.picture_upload != '':
+            if country.picture_upload.name[:8] == "main_app":
+                countries[i].picture_upload.name = '/' + country.picture_upload.name[9:]
+            countries[i].picture = countries[i].picture_upload
+        elif country.picture_url is not None:
+            countries[i].picture = countries[i].picture_url
 
-    return render(request, 'destinations/index.html', {'destinations':destinations}) #can pass data into html file
+    return render(request, 'countries/index.html', {'countries':countries}) #can pass data into html file
 
-def destination_detail(request,destination_id):
-    destination = Destination.objects.get(id=destination_id)
-    if destination.picture_upload != '':
-        if destination.picture_upload.name[:8] == "main_app":
-            destination.picture_upload.name = '/' + destination.picture_upload.name[9:]
-        destination.picture = destination.picture_upload
-    elif destination.picture_url is not None:
-        destination.picture = destination.picture_url
+def country_detail(request,country_id):
+    country = Country.objects.get(id=country_id)
+    
+    if country.picture_upload != '':
+        if country.picture_upload.name[:8] == "main_app":
+            country.picture_upload.name = '/' + country.picture_upload.name[9:]
+        country.picture = country.picture_upload
+    elif country.picture_url is not None:
+        country.picture = country.picture_url
     else:
-        destination.picture = None
+        country.picture = None
 
     location_form = LocationForm()
-    return render(request, 'destinations/detail.html', {'destination':destination, 'location_form':location_form})
+    return render(request, 'countries/detail.html', {'country':country, 'location_form':location_form})
 
 
-def add_location(request,destination_id):
+def add_location(request,country_id):
     form = LocationForm(request.POST)
     if form.is_valid():
         new_location = form.save(commit=False)
-        new_location.destination_id = destination_id
+        new_location.country_id = country_id
         new_location.save()
-    return redirect('detail', destination_id=destination_id)
+    return redirect('detail', country_id=country_id)

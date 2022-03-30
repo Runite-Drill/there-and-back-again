@@ -4,7 +4,7 @@
 {% if object %}
 <h1>Edit <span class='teal-text'>{{object.country}}</span></h1>
 {% else %}
-<h1>Add Destination</h1>
+<h1>Add Country</h1>
 {% endif %}
 
 <form action="" method="post">
@@ -14,6 +14,9 @@
         {{form.as_p}}
     </table>
     <input type='submit' value="Submit" class='btn'>
+    {% if object %}
+        <a href="{% url 'detail' country.id %}">Cancel</a>
+    {% endif %}
 </form>
 
 
