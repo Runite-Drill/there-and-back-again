@@ -4,21 +4,31 @@ from .models import Country, Highlight
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .forms import LocationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
-class countryCreate(CreateView):
+class countryCreate(LoginRequiredMixin, CreateView):
     model = Country
-    fields = '__all__'
+    fields = ['country','date','rating','comment','picture_upload','picture_url']
 
-class countryUpdate(UpdateView):
+    def form_valid(self,form):
+        form.instance.user = self.request.user
+        return super().form_valid(form) #calls form_valid in parent class
+
+class countryUpdate(LoginRequiredMixin, UpdateView):
     model = Country
     fields = ['date','rating','comment']
 
-class countryDelete(DeleteView):
+class countryDelete(LoginRequiredMixin, DeleteView):
     model = Country
     success_url = '/countries/'
 
-
+#REPURPOSE THIS APP INTO A COUNTRY REVIEW TOOL?
+#MANY USERS CAN RATE AND REVIEW AND LEAVE HIGHLIGHTS FOR COUNTRIES THEY HAVE VISITED
+#USERS CAN THEN ALSO LOG THEIR TRAVEL TO THAT COUNTRY (VISIBLE ONLY TO THEM)
 
 # class Destination:
 #     def __init__(self, location, country, date, rating, comment):
@@ -67,8 +77,9 @@ def home(request):
 def about(request):
     return render(request, 'about.html') #render is the same as res.render in express
 
+@login_required
 def country_index(request):
-    countries = Country.objects.all()
+    countries = Country.objects.filter(user = request.user)
     for i, country in enumerate(countries):
         if country.picture_upload != '':
             if country.picture_upload.name[:8] == "main_app":
@@ -79,6 +90,7 @@ def country_index(request):
 
     return render(request, 'countries/index.html', {'countries':countries}) #can pass data into html file
 
+@login_required
 def country_detail(request,country_id):
     country = Country.objects.get(id=country_id)
 
@@ -97,6 +109,7 @@ def country_detail(request,country_id):
     return render(request, 'countries/detail.html', {'country':country, 'location_form':location_form,'highlights':highlights_country_doesnt_have})
 
 
+@login_required
 def add_location(request,country_id):
     form = LocationForm(request.POST)
     if form.is_valid():
@@ -106,28 +119,45 @@ def add_location(request,country_id):
     return redirect('detail', country_id=country_id)
 
 #TOY CRUD
-class highlightList(ListView):
+class highlightList(LoginRequiredMixin, ListView):
     model = Highlight
 
-class highlightDetail(DetailView):
+class highlightDetail(LoginRequiredMixin, DetailView):
     model = Highlight
 
-class highlightCreate(CreateView):
-    model = Highlight
-    fields = '__all__'
-
-class highlightUpdate(UpdateView):
+class highlightCreate(LoginRequiredMixin, CreateView):
     model = Highlight
     fields = '__all__'
 
-class highlightDelete(DeleteView):
+class highlightUpdate(LoginRequiredMixin, UpdateView):
+    model = Highlight
+    fields = '__all__'
+
+class highlightDelete(LoginRequiredMixin, DeleteView):
     model = Highlight
     success_url = '/highlights/'
 
+@login_required
 def assoc_highlight(request, country_id, highlight_id):
     Country.objects.get(id=country_id).highlights.add(highlight_id)
     return redirect('detail', country_id=country_id)
 
+@login_required
 def unassoc_highlight(request, country_id, highlight_id):
     Country.objects.get(id=country_id).highlights.remove(highlight_id)
     return redirect('detail', country_id=country_id)
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save() #save the user to the database
+            login(request, user) #login the user
+            return redirect('index')
+        else:
+            error_message = 'Invalid signup - try again'
+
+    form = UserCreationForm()
+    context = {'form': form, 'error_message': error_message}
+    return render(request, 'registration/signup.html', context)

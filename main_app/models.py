@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 CATEGORIES = (
@@ -32,6 +33,7 @@ class Country(models.Model):
     picture_upload = models.ImageField(default=None, blank=True, null=True, upload_to="main_app/static/images")
     picture_url = models.CharField(default='https://www.pngitem.com/pimgs/m/775-7750535_travel-globe-png-free-download-transparent-png.png', blank=True, null=True, max_length=100)
     highlights = models.ManyToManyField(Highlight)
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
 
     def __str__(self):
         return self.name 

@@ -20,4 +20,7 @@ urlpatterns = [
     #associate hightlight with country
     path('countries/<int:country_id>/assoc_highlight/<int:highlight_id>/', views.assoc_highlight, name = 'assoc_highlight'),
     path('countries/<int:country_id>/unassoc_highlight/<int:highlight_id>/', views.unassoc_highlight, name = 'unassoc_highlight'),
+    
+    #URL for signup
+    path('accounts/signup/', views.signup, name="signup")
 ]
