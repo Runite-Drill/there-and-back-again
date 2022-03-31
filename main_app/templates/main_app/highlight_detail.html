@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Highlight Detail</h1>
+<div class="card">
+    <div class="card-content">
+        <span class="card-title">
+            {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
+        </span>
+
+        <div class="card-action">
+            <a href="{% url 'highlights_update' highlight.id %}">Edit</a>
+            <a href="{% url 'highlights_delete' highlight.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

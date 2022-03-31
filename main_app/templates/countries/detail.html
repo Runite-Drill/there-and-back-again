@@ -60,6 +60,59 @@
     </table>
 </div>
 
+<hr>
+<div class ="row">
+    <div class="col s6">
+        <h3>{{country.country}} Highlights</h3>
+
+        {%if country.highlights.count > 0%}
+            {%for highlight in country.highlights.all%}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
+                        </span>
+                    </div>
+                    <div class="card-action">
+                        <form action="{%url 'unassoc_highlight' country.id highlight.id%}" method="POST">
+                            {%csrf_token%}
+                            <button type="submit" class="btn">Remove Highlight</button>
+                        </form>
+                    </div>
+                </div>
+            {%endfor%}
+        {%else%}
+            <h5>This country does not have any highlights!</h5>
+        {%endif%}
+    </div>
+
+    <div class="col s6">
+        <h3>Available Highlights</h3>
+        {%if highlights.count > 0 %}
+            {%for highlight in highlights.all%}
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">
+                            {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
+                        </span>
+                    </div>
+                    <div class="card-action">
+                        <form action="{%url 'assoc_highlight' country.id highlight.id%}" method="POST">
+                            {%csrf_token%}
+                            <button type="submit" class="btn">Give Highlight</button>
+                        </form>
+                    </div>
+                </div>
+            {%endfor%}
+        {%else%}
+            <h5>{{country.country}} already has all the available highlights!</h5>
+        {%endif%}
+    </div>
+</div>
+
+
+
+
 <script>
 let dateEl = document.getElementById('id_date_visited');
 M.Datepicker.init(dateEl, {

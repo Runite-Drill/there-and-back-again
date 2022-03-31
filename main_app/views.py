@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Country
+from .models import Country, Highlight
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
 from .forms import LocationForm
 
 # Create your views here.
@@ -80,6 +81,8 @@ def country_index(request):
 
 def country_detail(request,country_id):
     country = Country.objects.get(id=country_id)
+
+    highlights_country_doesnt_have = Highlight.objects.exclude(id__in=country.highlights.all().values_list("id"))
     
     if country.picture_upload != '':
         if country.picture_upload.name[:8] == "main_app":
@@ -91,7 +94,7 @@ def country_detail(request,country_id):
         country.picture = None
 
     location_form = LocationForm()
-    return render(request, 'countries/detail.html', {'country':country, 'location_form':location_form})
+    return render(request, 'countries/detail.html', {'country':country, 'location_form':location_form,'highlights':highlights_country_doesnt_have})
 
 
 def add_location(request,country_id):
@@ -100,4 +103,31 @@ def add_location(request,country_id):
         new_location = form.save(commit=False)
         new_location.country_id = country_id
         new_location.save()
+    return redirect('detail', country_id=country_id)
+
+#TOY CRUD
+class highlightList(ListView):
+    model = Highlight
+
+class highlightDetail(DetailView):
+    model = Highlight
+
+class highlightCreate(CreateView):
+    model = Highlight
+    fields = '__all__'
+
+class highlightUpdate(UpdateView):
+    model = Highlight
+    fields = '__all__'
+
+class highlightDelete(DeleteView):
+    model = Highlight
+    success_url = '/highlights/'
+
+def assoc_highlight(request, country_id, highlight_id):
+    Country.objects.get(id=country_id).highlights.add(highlight_id)
+    return redirect('detail', country_id=country_id)
+
+def unassoc_highlight(request, country_id, highlight_id):
+    Country.objects.get(id=country_id).highlights.remove(highlight_id)
     return redirect('detail', country_id=country_id)
