@@ -12,44 +12,34 @@
 </head>
 <body>
     <header class="navbar-fixed">
-        <nav>
+        <nav style="color:black">
             <div class="nav_wrapper">
                 <ul>
                     <li>
-                        <a href="{%url 'home'%}" class = "left brand-logo">There and Back Again</a>
+                        <a href="{%url 'home'%}" class = "left brand-logo" style="color:black">There and Back Again</a>
                     </li>
                 </ul>
                 <ul class="right">
                     <li>
-                        <a href="{%url 'about'%}">About</a>
+                        <a href="{%url 'about'%}" style="color:black">About</a>
                     </li>
-                    {% if user.is_authenticated %}
-                        <li>
-                            <a href="{%url 'country_create'%}">Add a Country</a>
-                        </li>
-                        <li>
-                            <a href="{%url 'index'%}">View the Travel Log!</a>
-                        </li>
-                    {% endif %}
-                    {% if user.is_authenticated %}
-                        <li>
-                            <a href="{%url 'highlights_create'%}">Add a Highlight</a>
-                        </li>
-                        <li>
-                            <a href="{%url 'highlights_index'%}">View all Highlights!</a>
-                        </li>
-                    {% endif %}
+                    <li>
+                        <a href="{%url 'index'%}" style="color:black">Browse Countries</a>
+                    </li>
+                    <li>
+                        <a href="{%url 'highlights_index'%}" style="color:black">Browse Highlights</a>
+                    </li>
                     {% if user.is_authenticated %}
                         Hi {{user.username}}
                         <li>
-                            <a href="{%url 'logout' %}">Logout</a>
+                            <a href="{%url 'logout' %}" style="color:black">Logout</a>
                         </li>
                     {% else %}
                         <li>
-                            <a href="{%url 'signup' %}">Sign up</a>
+                            <a href="{%url 'signup' %}" style="color:black">Sign up</a>
                         </li>
                         <li>
-                            <a href="{%url 'login' %}">Login</a>
+                            <a href="{%url 'login' %}" style="color:black">Login</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -62,7 +52,7 @@
         {% endblock %}
     </main>
 
-    <footer class="page-footer">
+    <footer class="page-footer" style="color:black">
         <div class="right">All Rights Reserved, &copy; 2022 TravelHub</div>
     </footer>
 </body>

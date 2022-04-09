@@ -2,17 +2,29 @@
 
 {% block content %}
 
-<h1>Highlight List</h1>
+
+<div class="flex-container" style="align-items:center">
+    <h1>Highlight List</h1>
+    <a href="{%url 'highlights_create'%}" class="btn right">Create highlight</a>
+</div>
 
 {% for highlight in highlight_list %}
-<a href="{%url 'highlights_detail' highlight.id%}">
-    <div class="card">
-        <div class="card-content">
-            <span class="card-title">
-                {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
-            </span>
+<div class="card">
+    <div class="card-content">
+        <div class="flex-container">
+            <div>
+                <span class="card-title" style="color:black">
+                    {{highlight.name}} <small>({{highlight.get_category_display}})</small> 
+                </span>
+
+            </div>
+            <div class="card-action right">
+                <a href="{% url 'highlights_update' highlight.id %}">Edit</a>
+                <a href="{% url 'highlights_delete' highlight.id %}">Delete</a>
+            </div>
+
         </div>
     </div>
-</a>
+</div>
 {%endfor%}
 {% endblock %}

@@ -2,72 +2,58 @@
 
 {% block content %}
 
-<h1>Country Detail</h1>
+<h1>{{country.name}}</h1>
+{%if country.review_set.all|length > 0%}
+{% for review in country.review_set.all %}
 <div class="card">
     <div class="card-content">
         <div class="flex-container">
-            <div>
-                <span class="card-title"> {{country.country}}</span>
-                <p>Rating: {{country.rating}}/10</p>
-                <p>Last visited on: {{country.date}}</p>
-                {% if country.comment %}
-                    <p>General thoughts: {{country.comment}}</p>
-                {% else %}
-                    <p>No comment.</p>
-                {% endif %}
+            <div style="color:black">
+                <span class="card-title">{{review.location}} </span>
+                <span class="card-title"><small>Review by {{review.user}}</small></span>
+                <span class="card-subtitle"> Visited on: {{review.date_visited}}</span>
+                <p>Rating: {{review.rating}}/10</p>
+                <br>
+                <h6>Comments:</h6>
+                <p>{{review.comment}}</p>
             </div>
 
             <div class="right">
-                <img width = '128px' height = '128px'  class="picture" src="{{country.picture}}"/>
+                <img width = '128px' height = '128px'  class="picture" src="{{review.picture}}"/>
             </div>
         </div>
+
+        {% if user == review.user %}
         <div class="card-action">
-            <a href="{% url 'country_update' country.id %}">Edit</a>
-            <a href="{% url 'country_delete' country.id %}">Delete</a>
+            <a href="{% url 'review_update' review.id %}">Edit</a>
+            <a href="{% url 'review_delete' review.id %}">Delete</a>
         </div>
+        {%endif%}
     </div>
 </div>
+{% endfor %}
+
+{%else%}
+<p>There are no reviews for this country yet.</p>
+<p>Add one below to get things started!</p>
+{%endif%}
     
 <div> 
-    <h3>ADD LOCATION</h3>
-    <form method="post" action="{% url 'add_location' country.id %}">
+    <h3>Add Review</h3>
+    <form method="post" action="{% url 'add_review' country.id %}">
         {%csrf_token%}
-        {{location_form.as_p}}
-        <input type="submit" class="btn" value="Add Location">
+        {{review_form.as_p}}
+        <input type="submit" class="btn" value="Add Review">
     </form>
-</div>
-
-<div>
-    <table class="striped">
-        <thead>
-            <tr>
-                <th>Date Visited</th>
-                <th>Location</th>
-                <th>Rating</th>
-                <th>Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for location in country.location_set.all %}
-            <tr>
-                <td>{{location.date_visited}}</td>
-                <td>{{location.location}}</td>
-                <td>{{location.rating}}/10</td>
-                <td>{{location.comment}}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
 </div>
 
 <hr>
 <div class ="row">
     <div class="col s6">
-        <h3>{{country.country}} Highlights</h3>
-
+        <h3>{{country.name}} Highlights</h3>
         {%if country.highlights.count > 0%}
             {%for highlight in country.highlights.all%}
-                <div class="card">
+                <div class="card" style="color:black">
                     <div class="card-content">
                         <span class="card-title">
                             {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
@@ -87,10 +73,11 @@
     </div>
 
     <div class="col s6">
-        <h3>Available Highlights</h3>
+        <h3>Available Highlights | <a href="{%url 'highlights_create'%}" class="btn">Create highlight</a></h3>
+        
         {%if highlights.count > 0 %}
             {%for highlight in highlights.all%}
-                <div class="card">
+                <div class="card" style="color:black">
                     <div class="card-content">
                         <span class="card-title">
                             {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 

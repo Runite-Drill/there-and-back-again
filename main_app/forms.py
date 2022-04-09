@@ -1,7 +1,7 @@
 from django.forms import ModelForm
-from .models import Location
+from .models import Review
 
-class LocationForm(ModelForm):
+class ReviewForm(ModelForm):
     class Meta:
-        model = Location
-        fields = ['date_visited', 'location', 'rating', 'comment']
+        model = Review
+        fields = ['date_visited', 'location', 'rating', 'comment', 'picture']

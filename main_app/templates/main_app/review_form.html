@@ -2,9 +2,9 @@
 {% block content %}
 
 {% if object %}
-<h1>Edit <span class='teal-text'>{{object.name}}</span></h1>
+<h1>Edit <span class='orange-text'>{{object.location}}</span></h1>
 {% else %}
-<h1>Add Highlight</h1>
+<h1>Add Country</h1>
 {% endif %}
 
 <form action="" method="post">
@@ -15,14 +15,14 @@
     </table>
     <input type='submit' value="Submit" class='btn'>
     {% if object %}
-        <a href="{% url 'highlights_index'%}">Cancel</a>
+        <a href="{% url 'detail' object.country.id%}">Cancel</a>
     {% endif %}
 </form>
 
 <script>
-    let selectEl = document.getElementById('id_category');
-    M.FormSelect.init(selectEl); 
-</script>
+    let selectEl = document.getElementById("id_country");
+    M.FormSelect.init(selectEl);
+    </script>
 
 
 {% endblock %}
