@@ -1,17 +1,33 @@
 body {
     background: rgb(228, 201, 127);
+    /* color:antiquewhite; */
     display: flex;
     min-height: 100vh;
     flex-direction: column;
+    background-image: url('https://www.meme-arsenal.com/memes/4ce1fac503b464423c5d82aa38e55b04.jpg');
 }
+
 
 main {
     flex: 1 0 auto;
+    /* color: white; */
+    padding: 10px;
+    border: 5px solid black;
+    background-color: rgba(42,42,42,0.42);
+    border-radius: 42px;
+    color: white;
+}
+
+nav {
+    background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20200812/ourmid/pngtree-blue-minimalist-cartoon-airplane-white-cloud-h5-background-mobile-phone-use-map-png-image_391688.jpg');
+    background-size:repeat;
 }
 
 footer.page-footer {
     padding-top: 0;
     text-align: right;
+    background-image: url('https://png.pngtree.com/thumb_back/fh260/back_our/20200812/ourmid/pngtree-blue-minimalist-cartoon-airplane-white-cloud-h5-background-mobile-phone-use-map-png-image_391688.jpg');
+    background-size:repeat;
 }
 
 .flex-container {
@@ -22,4 +38,8 @@ footer.page-footer {
 .picture {
     border-radius: 10px;
     border: 5px solid black;
+}
+
+input {
+    color:white;
 }

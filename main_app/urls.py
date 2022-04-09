@@ -6,9 +6,10 @@ urlpatterns = [
     path("countries/",views.country_index, name="index"),
     path("countries/<int:country_id>/",views.country_detail, name="detail"),
     path("countries/create/",views.countryCreate.as_view(), name="country_create"),
-    path("countries/<int:pk>/update/",views.countryUpdate.as_view(), name="country_update"),
-    path("countries/<int:pk>/delete/",views.countryDelete.as_view(), name="country_delete"), 
-    path('countries/<int:country_id>/add_location/', views.add_location, name="add_location"),
+    path("review/<int:pk>/update/",views.reviewUpdate.as_view(), name="review_update"),
+    path("review/<int:pk>/delete/",views.reviewDelete.as_view(), name="review_delete"), 
+    path('countries/<int:country_id>/add_review/', views.add_review, name="add_review"),
+    path('review/create/', views.reviewCreate.as_view(), name="create_review"),
 
     #HIGHLIGHTS CRUD
     path("highlights/",views.highlightList.as_view(), name="highlights_index"),

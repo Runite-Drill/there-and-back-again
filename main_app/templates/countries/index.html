@@ -2,26 +2,26 @@
 
 {% block content %}
 
-<h1>Countries Visited</h1>
+<h1>Select a Country</h1>
 {% for country in countries%}
 <div class="card">
     <a href="{%url 'detail' country.id%}"> 
         <div class="card-content">
             <div class="flex-container">
                 <div>
-                    <span class="card-title"> {{country.country}}</span>
-                    <p>Rating: {{country.rating}}/10</p>
-                    <p>Visited on: {{country.date}}</p>
-                    {% if country.comment %}
-                        <p>Thoughts: {{country.comment}}</p>
-                    {% else %}
-                        <p>No comment.</p>
-                    {% endif %}
+                    <span class="card-title"> {{country.name}}</span>
+                    {%if country.review_set.all|length > 0%}
+                    <p>Average rating: {{country.rating}}/10.</p>
+                    <p>Based on {{country.review_set.all|length}} reviews.</p>
+                    {%else%}
+                    <p>There are no reviews for this country yet.</p>
+                    <p>Click here to review the country and add a review.</p>
+                    {%endif%}
                 </div>
 
 
                 <div class="right">
-                    <img width = '128x' height = '128px' class="picture" src="{{country.picture}}"/>
+                    <img width = '128x' height = '128px' class="picture" src="{{country.picture_url}}"/>
                 </div>
             </div>
         </div>
