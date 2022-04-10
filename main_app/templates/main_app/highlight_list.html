@@ -10,21 +10,23 @@
 
 {% for highlight in highlight_list %}
 <div class="card">
-    <div class="card-content">
-        <div class="flex-container">
-            <div>
-                <span class="card-title" style="color:black">
-                    {{highlight.name}} <small>({{highlight.get_category_display}})</small> 
-                </span>
+    <a href="{%url 'highlights_detail' highlight.id%}"> 
+        <div class="card-content">
+            <div class="flex-container">
+                <div>
+                    <span class="card-title">
+                        {{highlight.name}} <small>({{highlight.get_category_display}})</small> 
+                    </span>
+
+                </div>
+                <div class="card-action right">
+                    <a href="{% url 'highlights_update' highlight.id %}">Edit</a>
+                    <a href="{% url 'highlights_delete' highlight.id %}">Delete</a>
+                </div>
 
             </div>
-            <div class="card-action right">
-                <a href="{% url 'highlights_update' highlight.id %}">Edit</a>
-                <a href="{% url 'highlights_delete' highlight.id %}">Delete</a>
-            </div>
-
         </div>
-    </div>
+    </a>
 </div>
 {%endfor%}
 {% endblock %}

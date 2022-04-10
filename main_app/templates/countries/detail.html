@@ -53,12 +53,14 @@
         <h3>{{country.name}} Highlights</h3>
         {%if country.highlights.count > 0%}
             {%for highlight in country.highlights.all%}
-                <div class="card" style="color:black">
-                    <div class="card-content">
-                        <span class="card-title">
-                            {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
-                        </span>
-                    </div>
+                <div class="card">
+                    <a href="{%url 'highlights_detail' highlight.id%}"> 
+                        <div class="card-content">
+                            <span class="card-title">
+                                {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
+                            </span>
+                        </div>
+                    </a>
                     <div class="card-action">
                         <form action="{%url 'unassoc_highlight' country.id highlight.id%}" method="POST">
                             {%csrf_token%}
@@ -77,12 +79,14 @@
         
         {%if highlights.count > 0 %}
             {%for highlight in highlights.all%}
-                <div class="card" style="color:black">
-                    <div class="card-content">
-                        <span class="card-title">
-                            {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
-                        </span>
-                    </div>
+                <div class="card">
+                    <a href="{%url 'highlights_detail' highlight.id%}"> 
+                        <div class="card-content">
+                            <span class="card-title">
+                                {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
+                            </span>
+                        </div>
+                    </a>
                     <div class="card-action">
                         <form action="{%url 'assoc_highlight' country.id highlight.id%}" method="POST">
                             {%csrf_token%}

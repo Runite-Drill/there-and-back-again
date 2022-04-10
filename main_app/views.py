@@ -61,7 +61,7 @@ def country_index(request):
             for review in reviews:
                 rating+=review.rating
             rating = rating/len(reviews)
-            country.rating = rating
+            country.rating = round(rating,2)
 
 
     return render(request, 'countries/index.html', {'countries':countries}) #can pass data into html file
@@ -94,7 +94,7 @@ class reviewCreate(LoginRequiredMixin, CreateView):
 class highlightList(ListView):
     model = Highlight
 
-class highlightDetail(LoginRequiredMixin, DetailView):
+class highlightDetail(DetailView):
     model = Highlight
 
 class highlightCreate(LoginRequiredMixin, CreateView):
