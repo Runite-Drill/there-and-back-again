@@ -5,7 +5,7 @@
 <h1>Highlight Detail</h1>
 <div class="card">
     <div class="card-content">
-        <span class="card-title">
+        <span class="card-title" style="color:black">
             {{highlight.name}} <smaller>({{highlight.get_category_display}})</smaller> 
         </span>
 
@@ -15,5 +15,31 @@
         </div>
     </div>
 </div>
+<h3>Countries with this Highlight</h3>
+{%for country in highlight.country_set.all%}
+<div class="card">
+    <a href="{%url 'detail' country.id%}"> 
+        <div class="card-content">
+            <div class="flex-container">
+                <div>
+                    <span class="card-title"> {{country.name}}</span>
+                    {%if country.review_set.all|length > 0%}
+                    <p>{{country.review_set.all|length}} reviews.</p>
+                    <p>Click here to learn more about this country.</p>
+                    {%else%}
+                    <p>There are no reviews for this country yet.</p>
+                    <p>Click here to view the country and add a review.</p>
+                    {%endif%}
+                </div>
+
+
+                <div class="right">
+                    <img width = '128x' height = '128px' class="picture" src="{{country.picture_url}}"/>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+{%endfor%}
 
 {%endblock%}

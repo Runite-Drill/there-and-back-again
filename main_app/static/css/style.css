@@ -41,5 +41,12 @@ footer.page-footer {
 }
 
 input {
-    color:white;
+    color:black;
+}
+
+form {
+    background-color:white; 
+    border-radius:10px; 
+    padding:10px;
+    color: black;
 }
